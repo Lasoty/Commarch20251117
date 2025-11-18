@@ -2,7 +2,7 @@
 
 namespace ComarchCwiczenia.Repositories;
 
-public class CarRepository
+public class CarRepository : ICarRepository
 {
     public IReadOnlyList<Car> GetAvailableCars()
     {
@@ -13,4 +13,15 @@ public class CarRepository
             new Car("KR00001", "Volkswagen", "Golf")
         };
     }
+
+    public Car? GetByPlate(string plateNumber)
+    {
+        throw new NotImplementedException();
+    }
+}
+
+public interface ICarRepository
+{
+    IReadOnlyList<Car> GetAvailableCars();
+    Car? GetByPlate(string plateNumber);
 }

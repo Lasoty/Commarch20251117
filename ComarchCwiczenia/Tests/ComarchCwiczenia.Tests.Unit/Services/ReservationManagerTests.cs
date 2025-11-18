@@ -53,14 +53,30 @@ public class ReservationManagerTests
         // Arrange
         var userId = Guid.NewGuid();
         carRepo.Setup(c => c.GetByPlate(It.IsAny<string>())).Returns((Car?)null);
-        
+
         // Act
         TestDelegate del = () => manager.CreateReservation(userId, "NOT-EXISTS");
 
         // Assert
         var exeption = Assert.Throws<ArgumentException>(del);
-        
+
         Assert.That(exeption, Is.Not.Null);
         Assert.That(exeption.Message, Does.Contain("Car not found"));
+    }
+
+    [Test]
+    public void CreateReservation_WhenUserHasActiveReservation_ThrowsInvalidOperationException()
+    {
+        var userId = Guid.NewGuid();
+        var plate = "WX12345";
+
+        carRepo.Setup(r => r.GetByPlate(plate))
+            .Returns(new Car(plate, "Toyota", "Yaris"));
+
+        reservationRepo.Setup(r => r.UserHasActiveReservation(userId))
+            .Returns(true);
+
+        Assert.Throws<InvalidOperationException>(() =>
+            manager.CreateReservation(userId, plate));
     }
 }

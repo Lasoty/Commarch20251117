@@ -1,13 +1,15 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.14.36705.20 d17.14
+VisualStudioVersion = 17.14.36705.20
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ComarchCwiczenia", "ComarchCwiczenia\ComarchCwiczenia.csproj", "{AEAE1536-C550-4BA8-A461-C05C7929D1ED}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{02EA681E-C7D8-13C7-8484-4AC65E1B71E8}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ComarchCwiczenia.Tests.Unit", "Tests\ComarchCwiczenia.Tests.Unit\ComarchCwiczenia.Tests.Unit.csproj", "{ED2E9105-7DB5-4B14-9502-FD4C69B06482}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ComarchCwiczenia.Tests.E2e", "Tests\ComarchCwiczenia.Tests.E2e\ComarchCwiczenia.Tests.E2e.csproj", "{FAEEFD4E-6BA0-4AAA-B8CD-3B9A169CF89F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -23,12 +25,17 @@ Global
 		{ED2E9105-7DB5-4B14-9502-FD4C69B06482}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{ED2E9105-7DB5-4B14-9502-FD4C69B06482}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{ED2E9105-7DB5-4B14-9502-FD4C69B06482}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FAEEFD4E-6BA0-4AAA-B8CD-3B9A169CF89F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FAEEFD4E-6BA0-4AAA-B8CD-3B9A169CF89F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FAEEFD4E-6BA0-4AAA-B8CD-3B9A169CF89F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FAEEFD4E-6BA0-4AAA-B8CD-3B9A169CF89F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{ED2E9105-7DB5-4B14-9502-FD4C69B06482} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
+		{FAEEFD4E-6BA0-4AAA-B8CD-3B9A169CF89F} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {ADAC06DD-2650-462C-960D-B529F3E7D6B5}

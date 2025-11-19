@@ -21,6 +21,19 @@ public class SeleniumTests
         options.AddUserProfilePreference("download.default_directory", Path.Combine(Environment.CurrentDirectory, "Download"));
         options.AddUserProfilePreference("download.prompt_for_download", false);
 
+        options.AddArgument("headless");
+        options.AddArgument("--disable-gpu");
+        
+        options.AddArgument("--window-size=1920,1080");
+        options.AddArgument("--incognito");
+        options.AddArgument("--start-maximized");
+        options.AddArgument("--disable-infobars");
+        options.AddArgument("--disable-dev-shm-usage");
+        options.AddArgument("--ignore-certificate-errors");
+        options.AddArgument("--allow-insecure-localhost");
+        options.AddArgument("--disable-popup-blocking");
+        options.AddArgument("--lang=en-US");
+
         driver = new ChromeDriver(options);
         driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10);
     }

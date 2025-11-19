@@ -111,4 +111,42 @@ public class SeleniumTests
         var resultText = driver.FindElement(By.Id("result"));
         Assert.That(resultText.Text, Does.Contain("You successfully clicked an alert"));
     }
+
+    [Test]
+    public async Task HandleJavaScriptConfirmOkCancel()
+    {
+        await driver.Navigate().GoToUrlAsync("https://the-internet.herokuapp.com/javascript_alerts");
+
+        var alertBtn = driver.FindElement(By.XPath("//button[@onclick='jsConfirm()']"));
+        alertBtn.Click();
+
+        var alert = driver.SwitchTo().Alert();
+        Assert.That(alert.Text, Is.EqualTo("I am a JS Confirm"));
+        alert.Accept();
+        var resultText = driver.FindElement(By.Id("result"));
+        Assert.That(resultText.Text, Does.Contain("You clicked: Ok"));
+
+        alertBtn.Click();
+        alert = driver.SwitchTo().Alert();
+        alert.Dismiss();
+        Assert.That(resultText.Text, Does.Contain("You clicked: Cancel"));
+    }
+
+    [Test]
+    public async Task HandleJavaScriptPrompt()
+    {
+        await driver.Navigate().GoToUrlAsync("https://the-internet.herokuapp.com/javascript_alerts");
+
+        var alertBtn = driver.FindElement(By.XPath("//button[@onclick='jsPrompt()']"));
+        alertBtn.Click();
+
+        var alert = driver.SwitchTo().Alert();
+        Assert.That(alert.Text, Is.EqualTo("I am a JS prompt"));
+        alert.SendKeys("Leszek");
+        alert.Accept();
+        var resultText = driver.FindElement(By.Id("result"));
+        Assert.That(resultText.Text, Does.Contain("You entered: Leszek"));
+    }
+
+    
 }

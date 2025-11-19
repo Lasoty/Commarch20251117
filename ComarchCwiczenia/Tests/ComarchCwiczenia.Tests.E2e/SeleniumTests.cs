@@ -1,6 +1,7 @@
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.DevTools.V140.Network;
+using OpenQA.Selenium.Support.UI;
 
 namespace ComarchCwiczenia.Tests.E2e;
 
@@ -79,5 +80,35 @@ public class SeleniumTests
         var checkbox = driver.FindElement(By.XPath("//*[@id=\"checkboxes\"]/input[2]"));
 
         Assert.That(checkbox.Selected, Is.True);
+    }
+
+    [Test]
+    public async Task DropdownTest()
+    {
+        await driver.Navigate().GoToUrlAsync("https://the-internet.herokuapp.com/dropdown");
+
+        var dropdown = driver.FindElement(By.Id("dropdown"));
+        var selectElement = new SelectElement(dropdown);
+        selectElement.SelectByValue("1");
+
+        Assert.That(selectElement.SelectedOption.Text, Is.EqualTo("Option 1"));
+
+        selectElement.SelectByText("Option 2");
+        Assert.That(selectElement.SelectedOption.Text, Is.EqualTo("Option 2"));
+    }
+
+    [Test]
+    public async Task HandleJavaScriptAlerts()
+    {
+        await driver.Navigate().GoToUrlAsync("https://the-internet.herokuapp.com/javascript_alerts");
+
+        var alertBtn = driver.FindElement(By.XPath("//*[@id=\"content\"]/div/ul/li[1]/button"));
+        alertBtn.Click();
+
+        var alert = driver.SwitchTo().Alert();
+        Assert.That(alert.Text, Is.EqualTo("I am a JS Alert"));
+        alert.Accept();
+        var resultText = driver.FindElement(By.Id("result"));
+        Assert.That(resultText.Text, Does.Contain("You successfully clicked an alert"));
     }
 }

@@ -79,4 +79,51 @@ public class ReservationManagerTests
         Assert.Throws<InvalidOperationException>(() =>
             manager.CreateReservation(userId, plate));
     }
+
+    [Test]
+    public void CreateReservation_SavesReservationWithCorrectUserId()
+    {
+        // Arrange
+        Reservation? saved = null;
+        var userId = Guid.NewGuid();
+        var plate = "WX12345";
+
+        carRepo.Setup(r => r.GetByPlate(plate))
+            .Returns(new Car(plate, "Toyota", "Yaris"));
+
+        reservationRepo.Setup(r => r.UserHasActiveReservation(userId))
+            .Returns(false);
+
+        reservationRepo.Setup(r => r.Save(It.IsAny<Reservation>()))
+            .Callback<Reservation>(reservationIn =>
+            {
+                // jakaś tam logika
+                saved = reservationIn;
+            });
+
+        // Act
+        var actual = manager.CreateReservation(userId, plate);
+
+        // Assert
+        Assert.Multiple(() =>
+        {
+            Assert.That(saved, Is.Not.Null);
+            Assert.That(saved!.UserId, Is.EqualTo(userId));
+            Assert.That(saved!.Id, Is.EqualTo(actual.Id));
+        });
+    }
+
+    [Test]
+    public void UserHasActiveReservation_SequenceExample()
+    {
+        reservationRepo.SetupSequence(r => r.UserHasActiveReservation(It.IsAny<Guid>()))
+            .Returns(false) // pierwsze wywołanie
+            .Returns(false) // drugie
+            .Returns(true); // trzecie 
+
+
+        Assert.That(reservationRepo.Object.UserHasActiveReservation(Guid.NewGuid()), Is.False);
+        Assert.That(reservationRepo.Object.UserHasActiveReservation(Guid.NewGuid()), Is.False);
+        Assert.That(reservationRepo.Object.UserHasActiveReservation(Guid.NewGuid()), Is.True);
+    }
 }

@@ -31,4 +31,14 @@
     <Using Include="NUnit.Framework" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Assets\Files\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Assets\Files\fileUploadTest.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>

@@ -148,5 +148,50 @@ public class SeleniumTests
         Assert.That(resultText.Text, Does.Contain("You entered: Leszek"));
     }
 
-    
+    [Test]
+    public async Task TestDynamicLoading()
+    {
+        await driver.Navigate().GoToUrlAsync("https://the-internet.herokuapp.com/dynamic_loading/1");
+        var startBtn = driver.FindElement(By.XPath("//button[normalize-space()='Start']"));
+        startBtn.Click();
+
+        WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(20));
+        var loadedElement = 
+            wait.Until(SeleniumExtras.WaitHelpers.ExpectedConditions.ElementIsVisible(By.Id("finish")));
+
+        Assert.That(loadedElement.Text, Is.EqualTo("Hello World!"));
+    }
+
+    [Test]
+    public async Task TestDynamicLoading2()
+    {
+        await driver.Navigate().GoToUrlAsync("https://the-internet.herokuapp.com/dynamic_loading/2");
+        var startBtn = driver.FindElement(By.XPath("//button[normalize-space()='Start']"));
+        startBtn.Click();
+
+        WebDriverWait wait = new WebDriverWait(driver, TimeSpan.FromSeconds(20));
+        var loadedElement =
+            wait.Until(SeleniumExtras.WaitHelpers.ExpectedConditions.ElementExists(By.Id("finish")));
+
+        Assert.That(loadedElement.Text, Is.EqualTo("Hello World!"));
+    }
+
+    [Test]
+    public async Task FileUploadCorrectFileTest()
+    {
+        await driver.Navigate().GoToUrlAsync("https://the-internet.herokuapp.com/upload");
+        var fileInput = driver.FindElement(By.Id("file-upload"));
+
+        var filePath = Path.Combine("Assets", "Files", "fileUploadTest.txt");
+        var fileInfo = new FileInfo(filePath); 
+        if (!fileInfo.Exists)
+            Assert.Fail($"Plik {fileInfo.Name} nie istnieje.");
+
+        fileInput.SendKeys(fileInfo.FullName);
+        var uploadBtn = driver.FindElement(By.Id("file-submit"));
+        uploadBtn.Click();
+
+        var uploadedFileName = driver.FindElement(By.Id("uploaded-files"));
+        Assert.That(uploadedFileName.Text, Is.EqualTo(fileInfo.Name));
+    }
 }

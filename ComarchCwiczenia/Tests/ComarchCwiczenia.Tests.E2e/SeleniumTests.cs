@@ -1,6 +1,7 @@
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.DevTools.V140.Network;
+using OpenQA.Selenium.Firefox;
 using OpenQA.Selenium.Support.UI;
 
 namespace ComarchCwiczenia.Tests.E2e;
@@ -16,7 +17,11 @@ public class SeleniumTests
         new WebDriverManager.DriverManager().SetUpDriver(
             new WebDriverManager.DriverConfigs.Impl.ChromeConfig());
 
-        driver = new ChromeDriver();
+        var options = new ChromeOptions();
+        options.AddUserProfilePreference("download.default_directory", Path.Combine(Environment.CurrentDirectory, "Download"));
+        options.AddUserProfilePreference("download.prompt_for_download", false);
+
+        driver = new ChromeDriver(options);
         driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10);
     }
 
@@ -193,5 +198,39 @@ public class SeleniumTests
 
         var uploadedFileName = driver.FindElement(By.Id("uploaded-files"));
         Assert.That(uploadedFileName.Text, Is.EqualTo(fileInfo.Name));
+    }
+
+    [Test]
+    public async Task DownloadFileTest()
+    {
+        string fileName = "fileUploadTest.txt";
+        DirectoryInfo dir = PrepareFolder();
+
+        await driver.Navigate().GoToUrlAsync("https://the-internet.herokuapp.com/download");
+        var downloadLink = driver.FindElement(By.LinkText("fileUploadTest.txt"));
+        downloadLink.Click();
+
+        await Task.Delay(TimeSpan.FromSeconds(1));
+        Assert.That(dir.GetFiles().Any(f => f.Name == fileName), Is.True);
+        dir.Delete(true);
+    }
+
+    private DirectoryInfo PrepareFolder()
+    {
+        string dir = "Download";
+        DirectoryInfo directory = new DirectoryInfo(dir);
+
+        if (!directory.Exists)
+            directory.Create();
+
+        if (directory.GetFiles().Any())
+        {
+            foreach (var file in directory.GetFiles())
+            {
+                file.Delete();
+            }
+        }
+
+        return directory;
     }
 }
